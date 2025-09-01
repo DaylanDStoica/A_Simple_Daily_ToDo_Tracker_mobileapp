@@ -46,10 +46,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate (savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-//        addTaskBttn.findViewById(R.id.addTaskBttn)
-//        viewTasksBttn.findViewById<>()
-//        markProgressBttn.findViewById<>()
-        // add listeners for buttons clicks to change the view
+//        add listeners for buttons clicks to change the view
         addTaskBttn.setOnClickListener {
             // change to addTask viewModel
         }

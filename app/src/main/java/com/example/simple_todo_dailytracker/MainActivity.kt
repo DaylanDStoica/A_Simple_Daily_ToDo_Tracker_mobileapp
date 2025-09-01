@@ -18,20 +18,7 @@ import com.example.simple_todo_dailytracker.ui.theme.Simple_ToDo_DailyTrackerThe
 import java.io.File
 
 
-fun onCreate(mainActivity: MainActivity, savedInstanceState: Bundle?) {
-//    val onCreate = super.onCreate(savedInstanceState)
-    mainActivity.enableEdgeToEdge()
-    mainActivity.setContent {
-        Simple_ToDo_DailyTrackerTheme {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                Greeting(
-                    name = "Android",
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-        }
-    }
-}
+
 class MainActivity : ComponentActivity() {
     // the files for storage
     private lateinit var dailyTaskListFile : File

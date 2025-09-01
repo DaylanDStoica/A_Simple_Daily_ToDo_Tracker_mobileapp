@@ -1,8 +1,6 @@
 package com.example.simple_todo_dailytracker
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,37 +15,91 @@ import androidx.compose.ui.unit.dp
 import com.example.simple_todo_dailytracker.ui.theme.Simple_ToDo_DailyTrackerTheme
 import java.io.File
 
-
+// Add these imports for navigation
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
-    // the files for storage
     private lateinit var dailyTaskListFile : File
     private lateinit var todaysTaskListFile : File
 
-    override fun onCreate (savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Simple_ToDo_DailyTrackerTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
-                        Greeting(name = "Android")
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { /* TODO: Add Task logic */ }) {
-                            Text("Add Task")
+                    NavHost(
+                        navController = navController,
+                        startDestination = "main",
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable("main") {
+                            MainScreen(
+                                onAddTask = { navController.navigate("addTask") },
+                                onViewTasks = { navController.navigate("viewTasks") },
+                                onMarkProgress = { navController.navigate("markProgress") }
+                            )
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { /* TODO: View Tasks logic */ }) {
-                            Text("View Tasks")
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { /* TODO: Mark Progress logic */ }) {
-                            Text("Mark Progress")
-                        }
+                        composable("addTask") { AddTaskScreen(onBack = { navController.popBackStack() }) }
+                        composable("viewTasks") { ViewTasksScreen(onBack = { navController.popBackStack() }) }
+                        composable("markProgress") { MarkProgressScreen(onBack = { navController.popBackStack() }) }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun MainScreen(
+    onAddTask: () -> Unit,
+    onViewTasks: () -> Unit,
+    onMarkProgress: () -> Unit
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Greeting(name = "Android")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onAddTask) {
+            Text("Add Task")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onViewTasks) {
+            Text("View Tasks")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onMarkProgress) {
+            Text("Mark Progress")
+        }
+    }
+}
+
+@Composable
+fun AddTaskScreen(onBack: () -> Unit) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Add Task Screen")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onBack) { Text("Back") }
+    }
+}
+
+@Composable
+fun ViewTasksScreen(onBack: () -> Unit) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("View Tasks Screen")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onBack) { Text("Back") }
+    }
+}
+
+@Composable
+fun MarkProgressScreen(onBack: () -> Unit) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Mark Progress Screen")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onBack) { Text("Back") }
     }
 }
 
@@ -63,6 +115,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     Simple_ToDo_DailyTrackerTheme {
-        Greeting("Android")
+        MainScreen({}, {}, {})
     }
 }

@@ -1,6 +1,7 @@
 package com.example.simple_todo_dailytracker
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,24 +16,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.simple_todo_dailytracker.ui.theme.Simple_ToDo_DailyTrackerTheme
 import java.io.File
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            Simple_ToDo_DailyTrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+fun onCreate(mainActivity: MainActivity, savedInstanceState: Bundle?) {
+//    val onCreate = super.onCreate(savedInstanceState)
+    mainActivity.enableEdgeToEdge()
+    mainActivity.setContent {
+        Simple_ToDo_DailyTrackerTheme {
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Greeting(
+                    name = "Android",
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
     }
+}
+class MainActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+//        super.onCreate(savedInstanceState, persistentState)
+//    }
     // the files for storage
-    private lateinit var DailyTaskListFile : File
-    private lateinit var TodaysTaskListFile : File
+    private lateinit var dailyTaskListFile : File
+    private lateinit var todaysTaskListFile : File
 
     // the buttons to change viewModels
     private lateinit var addTaskBttn : Button

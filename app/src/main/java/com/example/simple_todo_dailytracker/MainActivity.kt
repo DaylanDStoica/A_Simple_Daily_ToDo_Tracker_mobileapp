@@ -1,6 +1,7 @@
 package com.example.simple_todo_dailytracker
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,8 +30,32 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    // the files for storage
     private lateinit var DailyTaskListFile : File
     private lateinit var TodaysTaskListFile : File
+
+    // the buttons to change viewModels
+    private lateinit var addTaskBttn : Button
+    private lateinit var viewTasksBttn: Button
+    private lateinit var markProgressBttn: Button
+
+    override fun onCreate (savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+//        addTaskBttn.findViewById(R.id.addTaskBttn)
+//        viewTasksBttn.findViewById<>()
+//        markProgressBttn.findViewById<>()
+        // add listeners for buttons clicks to change the view
+        addTaskBttn.setOnClickListener {
+            // change to addTask viewModel
+        }
+        viewTasksBttn.setOnClickListener {
+            // change to viewing tasks viewModel
+        }
+        markProgressBttn.setOnClickListener {
+            // change to mark progress for today viewModel
+        }
+
+    }
 }
 
 @Composable

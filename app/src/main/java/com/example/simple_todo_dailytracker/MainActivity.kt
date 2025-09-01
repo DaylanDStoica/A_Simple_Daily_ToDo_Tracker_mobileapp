@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate (savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-//        add listeners for buttons clicks to change the view
+        // add listeners for buttons clicks to change the view
         addTaskBttn.setOnClickListener {
             // change to addTask viewModel
         }

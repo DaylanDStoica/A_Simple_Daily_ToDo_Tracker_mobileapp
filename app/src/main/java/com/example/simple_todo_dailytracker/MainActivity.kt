@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var dailyTaskListFile : File
     private lateinit var todaysTaskListFile : File
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -76,11 +77,16 @@ fun MainScreen(
     }
 }
 
+// screens for the differnt features of the app:
+// 1. AddTask, with a keyboard
+// 2. ViewTask, read only as a reminder
+// 3. MarkProgress, with a slider or a checkmark to signify task complete
 @Composable
 fun AddTaskScreen(onBack: () -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Add Task Screen")
-        Spacer(modifier = Modifier.height(16.dp))
+        Text("Add Task")
+        Spacer(Modifier.height(8.dp))
+        // Add more UI here, like TextFields and Buttons
         Button(onClick = onBack) { Text("Back") }
     }
 }
@@ -106,7 +112,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello $name! \n Ready to track your tasks for the day",
         modifier = modifier
     )
 }

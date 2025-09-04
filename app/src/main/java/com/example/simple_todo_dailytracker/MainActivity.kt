@@ -120,6 +120,8 @@ fun ViewTasksScreen(onBack: () -> Unit) {
         Text("View Tasks Screen")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
+        Log.d("ViewTasksScreen", "Opening task list for read only")
+        
     }
 }
 

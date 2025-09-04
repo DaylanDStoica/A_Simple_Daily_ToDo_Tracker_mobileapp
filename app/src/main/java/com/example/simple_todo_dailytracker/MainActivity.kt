@@ -1,5 +1,6 @@
 package com.example.simple_todo_dailytracker
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -23,6 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import java.io.IOException
+import java.io.InputStream
 
 
 const val dailyTaskListFile : String = "dailyTaskFile.txt"
@@ -103,7 +106,7 @@ fun AddTaskScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(8.dp))
         Button(onClick = { // button to submit task to end of the dailyTaskListFile
             Log.d("AddTaskScreen", "Task entered: $taskName")
-            context.openFileOutput(dailyTaskListFile, android.content.Context.MODE_APPEND).use { output ->
+            context.openFileOutput(dailyTaskListFile, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
         }) {
@@ -120,8 +123,36 @@ fun ViewTasksScreen(onBack: () -> Unit) {
         Text("View Tasks Screen")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
+//        Text(
+//            id = "textBox",
+//            text = ""
+//        )
         Log.d("ViewTasksScreen", "Opening task list for read only")
-        
+//        context.
+        // the input stream from the file todaysTaskList
+        val myInputStream : InputStream
+        // output stream
+        val outputStream : String
+        //try to open the text file
+        try {
+            myInputStream = assets.open(todaysTaskListFile)
+
+            val size : Int = myInputStream.available()
+            val buffer = ByteArray(size)
+
+            myInputStream.read()
+            outputStream = String(buffer)
+
+            // sets Textview with string
+//            textBox.text = outputStream
+
+            myInputStream.close()
+
+
+        }
+        catch (e : IOException){
+            e.printStackTrace()
+        }
     }
 }
 

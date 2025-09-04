@@ -1,6 +1,7 @@
 package com.example.simple_todo_dailytracker
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -79,20 +80,32 @@ fun MainScreen(
     }
 }
 
-// screens for the differnt features of the app:
+// screens for the different features of the app:
 // 1. AddTask, with a keyboard
 // 2. ViewTask, read only as a reminder
 // 3. MarkProgress, with a slider or a checkmark to signify task complete
 @Composable
 fun AddTaskScreen(onBack: () -> Unit) {
+    // screen for adding a task to the list
+    var taskName by remember { mutableStateOf("") }
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Add Task Screen")
+        Text("Add Task Screen") // task at top of screen, identifier
         Spacer(Modifier.height(8.dp))
-        // Add more UI here, like TextFields and Buttons
+        TextField( // text input
+            value = taskName,
+            onValueChange = { taskName = it },
+            label = { Text("Task Name") }
+        )
+        Spacer(Modifier.height(8.dp))
+        Button(onClick = { // button for submitting the task to be added
+            // Use taskName here (e.g., save the task)
 
-        // Textfield
-        
-        //button for submitting task
+            Log.d("AddTaskScreen", "Task entered: $taskName")
+            // You can add your save logic here
+        }) {
+            Text("Submit Task")
+        }
+        Spacer(Modifier.height(8.dp))
         Button(onClick = onBack) { Text("Back") }
     }
 }

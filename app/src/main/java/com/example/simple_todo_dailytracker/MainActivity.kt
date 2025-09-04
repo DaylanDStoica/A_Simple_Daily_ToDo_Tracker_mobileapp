@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.simple_todo_dailytracker.ui.theme.Simple_ToDo_DailyTrackerTheme
 import java.io.File
+import androidx.compose.ui.platform.LocalContext
 
 // Add these imports for navigation
 import androidx.navigation.compose.NavHost
@@ -90,6 +91,7 @@ fun MainScreen(
 fun AddTaskScreen(onBack: () -> Unit) {
     // screen for adding a task to the list
     var taskName by remember { mutableStateOf("") }
+    val context = LocalContext.current // <-- Move this here!
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Add Task Screen") // task at top of screen, identifier
         Spacer(Modifier.height(8.dp))
@@ -99,14 +101,11 @@ fun AddTaskScreen(onBack: () -> Unit) {
             label = { Text("Task Name") }
         )
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { // button for submitting the task to be added
-            // Use taskName here (e.g., save the task)
-
+        Button(onClick = { // button to submit task to end of the dailyTaskListFile
             Log.d("AddTaskScreen", "Task entered: $taskName")
-            // You can add your save logic here
-
-            // dailyTaskListFile
-
+            context.openFileOutput(dailyTaskListFile, android.content.Context.MODE_APPEND).use { output ->
+                output.write((taskName + "\n").toByteArray())
+            }
         }) {
             Text("Submit Task")
         }

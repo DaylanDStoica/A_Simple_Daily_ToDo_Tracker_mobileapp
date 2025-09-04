@@ -1,6 +1,7 @@
 package com.example.simple_todo_dailytracker
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +63,7 @@ fun MainScreen(
     onMarkProgress: () -> Unit
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Greeting(name = "Android")
+        Greeting(name = "User")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onAddTask) {
             Text("Add Task")
@@ -84,9 +86,13 @@ fun MainScreen(
 @Composable
 fun AddTaskScreen(onBack: () -> Unit) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Add Task")
+        Text("Add Task Screen")
         Spacer(Modifier.height(8.dp))
         // Add more UI here, like TextFields and Buttons
+
+        // Textfield
+        
+        //button for submitting task
         Button(onClick = onBack) { Text("Back") }
     }
 }

@@ -23,9 +23,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+
+const val dailyTaskListFile : String = "dailyTaskFile.txt"
+const val todaysTaskListFile : String = "todaysTaskFile.txt"
 class MainActivity : ComponentActivity() {
-    private lateinit var dailyTaskListFile : File
-    private lateinit var todaysTaskListFile : File
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +104,9 @@ fun AddTaskScreen(onBack: () -> Unit) {
 
             Log.d("AddTaskScreen", "Task entered: $taskName")
             // You can add your save logic here
+
+            // dailyTaskListFile
+
         }) {
             Text("Submit Task")
         }

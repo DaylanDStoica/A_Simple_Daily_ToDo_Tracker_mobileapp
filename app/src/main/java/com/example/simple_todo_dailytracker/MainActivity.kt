@@ -106,7 +106,13 @@ fun AddTaskScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(8.dp))
         Button(onClick = { // button to submit task to end of the dailyTaskListFile
             Log.d("AddTaskScreen", "Task entered: $taskName")
+            // writing to internal storage
             context.openFileOutput(dailyTaskListFile, Context.MODE_APPEND).use { output ->
+                output.write((taskName + "\n").toByteArray())
+            }
+            // for testing, copy step above to todaysTaskList
+            // TODO: remove this line upon automating of copying DailyTasks file contents into TodaysTasks contents
+            context.openFileOutput(todaysTaskListFile, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
         }) {
@@ -125,7 +131,8 @@ fun ViewTasksScreen(onBack: () -> Unit) {
     // Read the file when the composable is first composed
     LaunchedEffect(Unit) {
         try {
-            context.assets.open(todaysTaskListFile).use { input ->
+            // reading from internal storage
+            context.openFileInput(todaysTaskListFile).use { input ->
                 tasks = input.bufferedReader().readText()
             }
         } catch (e: IOException) {

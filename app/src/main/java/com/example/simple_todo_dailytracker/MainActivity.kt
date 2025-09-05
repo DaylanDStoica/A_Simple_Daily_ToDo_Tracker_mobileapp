@@ -125,7 +125,7 @@ fun ViewTasksScreen(onBack: () -> Unit) {
     // Read the file when the composable is first composed
     LaunchedEffect(Unit) {
         try {
-            context.openFileInput(todaysTaskListFile).use { input ->
+            context.assets.open(todaysTaskListFile).use { input ->
                 tasks = input.bufferedReader().readText()
             }
         } catch (e: IOException) {

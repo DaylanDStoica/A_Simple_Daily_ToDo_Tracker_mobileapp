@@ -119,40 +119,26 @@ fun AddTaskScreen(onBack: () -> Unit) {
 
 @Composable
 fun ViewTasksScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    var tasks by remember { mutableStateOf("") }
+
+    // Read the file when the composable is first composed
+    LaunchedEffect(Unit) {
+        try {
+            context.openFileInput(todaysTaskListFile).use { input ->
+                tasks = input.bufferedReader().readText()
+            }
+        } catch (e: IOException) {
+            tasks = "No tasks found."
+        }
+    }
+
     Column(modifier = Modifier.padding(16.dp)) {
         Text("View Tasks Screen")
         Spacer(modifier = Modifier.height(16.dp))
+        Text(tasks)
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
-//        Text(
-//            id = "textBox",
-//            text = ""
-//        )
-        Log.d("ViewTasksScreen", "Opening task list for read only")
-//        context.
-        // the input stream from the file todaysTaskList
-        val myInputStream : InputStream
-        // output stream
-        val outputStream : String
-        //try to open the text file
-        try {
-            myInputStream = assets.open(todaysTaskListFile)
-
-            val size : Int = myInputStream.available()
-            val buffer = ByteArray(size)
-
-            myInputStream.read()
-            outputStream = String(buffer)
-
-            // sets Textview with string
-//            textBox.text = outputStream
-
-            myInputStream.close()
-
-
-        }
-        catch (e : IOException){
-            e.printStackTrace()
-        }
     }
 }
 

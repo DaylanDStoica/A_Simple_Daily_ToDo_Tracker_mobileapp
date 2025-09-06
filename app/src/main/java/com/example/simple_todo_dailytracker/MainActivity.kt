@@ -115,6 +115,12 @@ fun AddTaskScreen(onBack: () -> Unit) {
             context.openFileOutput(todaysTaskListFile, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
+            // after writing to the file, clear the text value in the box
+//            Text("Task added: $taskName")
+            taskName = ""
+            // display a message telling that the task was added
+
+
         }) {
             Text("Submit Task")
         }
@@ -151,20 +157,77 @@ fun ViewTasksScreen(onBack: () -> Unit) {
 
 @Composable
 fun MarkProgressScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    var tasks by remember { mutableStateOf(listOf<String>()) }
+    var editingIndex by remember { mutableStateOf<Int?>(null) }
+    var editingText by remember { mutableStateOf("") }
+
+    // Read tasks from file on first composition
+    LaunchedEffect(Unit) {
+        try {
+            context.openFileInput(todaysTaskListFile).use { input ->
+                tasks = input.bufferedReader().readLines()
+            }
+        } catch (e: IOException) {
+            tasks = listOf("No tasks found.")
+        }
+    }
+
+    // Function to update a task and save to file
+    fun updateTask(index: Int, newTask: String) {
+        val updatedTasks = tasks.toMutableList()
+        updatedTasks[index] = newTask
+        tasks = updatedTasks
+        // Write all tasks back to file
+        context.openFileOutput(todaysTaskListFile, Context.MODE_PRIVATE).use { output ->
+            output.write(updatedTasks.joinToString("\n").toByteArray())
+        }
+    }
+
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Mark Progress Screen")
         Spacer(modifier = Modifier.height(16.dp))
+        tasks.forEachIndexed { idx, task ->
+            Button(
+                onClick = {
+                    editingIndex = idx
+                    editingText = task
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Text(task)
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
+    }
 
-        // read from todaysTaskListFile
-        // and display onto the screen
-
-        // setup interface that can select the task displayed when tapped
-        // and open UI to track incremental progress
-
-        // 1. Complete task in one press (go on a walk)
-
-        // 2. incremental progress, (drink X liters of water)
+    // Edit dialog
+    if (editingIndex != null) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { editingIndex = null },
+            title = { Text("Edit Task") },
+            text = {
+                TextField(
+                    value = editingText,
+                    onValueChange = { editingText = it },
+                    label = { Text("Task") }
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    editingIndex?.let { idx ->
+                        updateTask(idx, editingText)
+                    }
+                    editingIndex = null
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Button(onClick = { editingIndex = null }) { Text("Cancel") }
+            }
+        )
     }
 }
 

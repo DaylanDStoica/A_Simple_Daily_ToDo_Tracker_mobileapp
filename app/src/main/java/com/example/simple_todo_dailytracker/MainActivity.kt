@@ -155,6 +155,16 @@ fun MarkProgressScreen(onBack: () -> Unit) {
         Text("Mark Progress Screen")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
+
+        // read from todaysTaskListFile
+        // and display onto the screen
+
+        // setup interface that can select the task displayed when tapped
+        // and open UI to track incremental progress
+
+        // 1. Complete task in one press (go on a walk)
+
+        // 2. incremental progress, (drink X liters of water)
     }
 }
 

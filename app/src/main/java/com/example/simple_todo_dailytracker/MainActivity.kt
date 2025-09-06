@@ -119,8 +119,6 @@ fun AddTaskScreen(onBack: () -> Unit) {
 //            Text("Task added: $taskName")
             taskName = ""
             // display a message telling that the task was added
-
-
         }) {
             Text("Submit Task")
         }

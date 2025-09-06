@@ -217,12 +217,27 @@ fun MarkProgressScreen(onBack: () -> Unit) {
                 )
             },
             confirmButton = {
-                Button(onClick = {
-                    editingIndex?.let { idx ->
-                        updateTask(idx, editingText)
-                    }
-                    editingIndex = null
-                }) { Text("Save") }
+                Row { // Use a Row inside confirmButton to show both "Save" and "Complete Task" actions.
+                    Button(onClick = {
+                        editingIndex?.let { idx ->
+                            updateTask(idx, editingText)
+                        }
+                        editingIndex = null
+                    }) { Text("Save") }
+                    Spacer(Modifier.width(8.dp))
+                    Button(onClick = {
+                        editingIndex?.let { idx ->
+                            // Remove the selected task
+                            val updatedTasks = tasks.toMutableList().apply { removeAt(idx) }
+                            tasks = updatedTasks
+                            // Write the updated list back to the file (no empty lines)
+                            context.openFileOutput(todaysTaskListFile, Context.MODE_PRIVATE).use { output ->
+                                output.write(updatedTasks.joinToString("\n").toByteArray())
+                            }
+                        }
+                        editingIndex = null // close dialog after completing the rewrite
+                    }) { Text("Complete Task") }
+                }
             },
             dismissButton = {
                 Button(onClick = { editingIndex = null }) { Text("Cancel") }

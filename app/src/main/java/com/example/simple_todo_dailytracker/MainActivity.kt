@@ -103,6 +103,7 @@ fun MainScreen(
             Text("Mark Progress")
         }
         Spacer(modifier = Modifier.height(8.dp))
+        // TODO: change ResetTasks button to one with a confirmation window. One click to reset a day's progress is too easy to happen by accident.
         Button( onClick = { ResetTodaysTasks(context = context) }){
             Text("Reset Tasks")
         }
@@ -137,14 +138,12 @@ fun AddTaskScreen(onBack: () -> Unit) {
             context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
-            // for testing, copy step above to todaysTaskList
-            // TODO: remove this line upon automating of copying DailyTasks file contents into TodaysTasks contents
             context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
             // after writing to the file, clear the text value in the box
 //            Text("Task added: $taskName")
-            taskName = ""
+            taskName = "" // set visible task entry box to empty
             // display a message telling that the task was added
         }) {
             Text("Submit Task")

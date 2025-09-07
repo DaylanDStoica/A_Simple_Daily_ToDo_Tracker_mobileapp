@@ -33,8 +33,17 @@ const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
 const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
 
 // TODO: set up function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
-fun ResetTodaysTasks(){
-    
+fun ResetTodaysTasks(context: Context) {
+    try {
+        val dailyTasks = File(context.filesDir, DAILYTASKLISTSFILE)
+        val todaysTasks = File(context.filesDir, TODAYSTASKLISTFILE)
+        if (dailyTasks.exists()) {
+            val content = dailyTasks.readText()
+            todaysTasks.writeText(content)
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
 }
 class MainActivity : ComponentActivity() {
 

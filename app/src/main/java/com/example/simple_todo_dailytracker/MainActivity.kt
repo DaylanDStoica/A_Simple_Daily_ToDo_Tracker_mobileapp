@@ -29,10 +29,10 @@ import java.io.InputStream // commenting this import out, results in blank space
 
 
 
-const val dailyTaskListFile : String = "dailyTaskFile.txt"
-const val todaysTaskListFile : String = "todaysTaskFile.txt"
+const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
+const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
 
-// TODO: set up function to reset contents of todaysTaskListFile to be the contents of dailyTaskFile
+// TODO: set up function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
 fun ResetTodaysTasks(){
     
 }
@@ -110,15 +110,15 @@ fun AddTaskScreen(onBack: () -> Unit) {
             label = { Text("Task Name") }
         )
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { // button to submit task to end of the dailyTaskListFile
+        Button(onClick = { // button to submit task to end of the DAILYTASKLISTSFILE
             Log.d("AddTaskScreen", "Task entered: $taskName")
             // writing to internal storage
-            context.openFileOutput(dailyTaskListFile, Context.MODE_APPEND).use { output ->
+            context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
             // for testing, copy step above to todaysTaskList
             // TODO: remove this line upon automating of copying DailyTasks file contents into TodaysTasks contents
-            context.openFileOutput(todaysTaskListFile, Context.MODE_APPEND).use { output ->
+            context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_APPEND).use { output ->
                 output.write((taskName + "\n").toByteArray())
             }
             // after writing to the file, clear the text value in the box
@@ -142,7 +142,7 @@ fun ViewTasksScreen(onBack: () -> Unit) {
     LaunchedEffect(Unit) {
         try {
             // reading from internal storage
-            context.openFileInput(todaysTaskListFile).use { input ->
+            context.openFileInput(TODAYSTASKLISTFILE).use { input ->
                 tasks = input.bufferedReader().readText()
             }
         } catch (e: IOException) {
@@ -169,7 +169,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
     // Read tasks from file on first composition
     LaunchedEffect(Unit) {
         try {
-            context.openFileInput(todaysTaskListFile).use { input ->
+            context.openFileInput(TODAYSTASKLISTFILE).use { input ->
                 tasks = input.bufferedReader().readLines()
             }
         } catch (e: IOException) {
@@ -183,7 +183,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
         updatedTasks[index] = newTask
         tasks = updatedTasks
         // Write all tasks back to file
-        context.openFileOutput(todaysTaskListFile, Context.MODE_PRIVATE).use { output ->
+        context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_PRIVATE).use { output ->
             output.write(updatedTasks.joinToString("\n").toByteArray())
         }
     }
@@ -235,7 +235,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
                             val updatedTasks = tasks.toMutableList().apply { removeAt(idx) }
                             tasks = updatedTasks
                             // Write the updated list back to the file (no empty lines)
-                            context.openFileOutput(todaysTaskListFile, Context.MODE_PRIVATE).use { output ->
+                            context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_PRIVATE).use { output ->
                                 output.write(updatedTasks.joinToString("\n").toByteArray())
                             }
                         }

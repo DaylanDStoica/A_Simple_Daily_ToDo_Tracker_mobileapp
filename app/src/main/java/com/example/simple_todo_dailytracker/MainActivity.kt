@@ -32,7 +32,7 @@ import java.io.InputStream // commenting this import out, results in blank space
 const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
 const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
 
-// TODO: set up function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
+// function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
 fun ResetTodaysTasks(context: Context) {
     try {
         val dailyTasks = File(context.filesDir, DAILYTASKLISTSFILE)
@@ -84,6 +84,7 @@ fun MainScreen(
     onViewTasks: () -> Unit,
     onMarkProgress: () -> Unit
 ) {
+    val context = LocalContext.current
     Column(modifier = Modifier.padding(16.dp)) {
         Greeting(name = "User")
         Spacer(modifier = Modifier.height(16.dp))
@@ -97,6 +98,10 @@ fun MainScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onMarkProgress) {
             Text("Mark Progress")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button( onClick = { ResetTodaysTasks(context = context) }){
+            Text("Reset Tasks")
         }
     }
 }
@@ -259,6 +264,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
     }
 }
 
+// TODO: setup the RemoveTask Screen for removing lines from the DailyTasks File
 @Composable
 fun RemoveTaskScreen( onBack: () -> Unit){
     // screen for removing items on the permanent dailyTasksListFile

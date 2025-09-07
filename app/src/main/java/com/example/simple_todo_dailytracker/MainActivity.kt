@@ -31,6 +31,11 @@ import java.io.InputStream // commenting this import out, results in blank space
 
 const val dailyTaskListFile : String = "dailyTaskFile.txt"
 const val todaysTaskListFile : String = "todaysTaskFile.txt"
+
+// TODO: set up function to reset contents of todaysTaskListFile to be the contents of dailyTaskFile
+fun ResetTodaysTasks(){
+    
+}
 class MainActivity : ComponentActivity() {
 
 
@@ -243,6 +248,12 @@ fun MarkProgressScreen(onBack: () -> Unit) {
             }
         )
     }
+}
+
+@Composable
+fun RemoveTaskScreen( onBack: () -> Unit){
+    // screen for removing items on the permanent dailyTasksListFile
+
 }
 
 @Composable

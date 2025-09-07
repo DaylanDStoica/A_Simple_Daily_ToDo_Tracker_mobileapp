@@ -65,12 +65,14 @@ class MainActivity : ComponentActivity() {
                             MainScreen(
                                 onAddTask = { navController.navigate("addTask") },
                                 onViewTasks = { navController.navigate("viewTasks") },
-                                onMarkProgress = { navController.navigate("markProgress") }
+                                onMarkProgress = { navController.navigate("markProgress") },
+                                onRemoveTask = { navController.navigate("removeTask")}
                             )
                         }
                         composable("addTask") { AddTaskScreen(onBack = { navController.popBackStack() }) }
                         composable("viewTasks") { ViewTasksScreen(onBack = { navController.popBackStack() }) }
                         composable("markProgress") { MarkProgressScreen(onBack = { navController.popBackStack() }) }
+                        composable("removeTask") { RemoveTaskScreen( onBack = { navController.popBackStack() }) }
                     }
                 }
             }
@@ -82,7 +84,8 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     onAddTask: () -> Unit,
     onViewTasks: () -> Unit,
-    onMarkProgress: () -> Unit
+    onMarkProgress: () -> Unit,
+    onRemoveTask: () -> Unit
 ) {
     val context = LocalContext.current
     Column(modifier = Modifier.padding(16.dp)) {
@@ -102,6 +105,10 @@ fun MainScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Button( onClick = { ResetTodaysTasks(context = context) }){
             Text("Reset Tasks")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onRemoveTask) {
+            Text("Remove Task")
         }
     }
 }
@@ -268,7 +275,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
 @Composable
 fun RemoveTaskScreen( onBack: () -> Unit){
     // screen for removing items on the permanent dailyTasksListFile
-
+    Button( onClick = { onBack}) { Text = "Back"}
 }
 
 @Composable
@@ -283,6 +290,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     Simple_ToDo_DailyTrackerTheme {
-        MainScreen({}, {}, {})
+        MainScreen({}, {}, {}, onRemoveTask = {} )
     }
 }

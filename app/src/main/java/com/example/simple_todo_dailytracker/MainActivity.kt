@@ -273,9 +273,95 @@ fun MarkProgressScreen(onBack: () -> Unit) {
 
 // TODO: setup the RemoveTask Screen for removing lines from the DailyTasks File
 @Composable
-fun RemoveTaskScreen( onBack: () -> Unit){
-    // screen for removing items on the permanent dailyTasksListFile
-    Button( onClick = { onBack}) { Text = "Back"}
+fun RemoveTaskScreen(onBack: () -> Unit) {
+    // screen for removing tasks from permanent DailyTasks
+    val context = LocalContext.current
+    var tasks by remember { mutableStateOf(listOf<String>()) }
+    var editingIndex by remember { mutableStateOf<Int?>(null) }
+    var editingText by remember { mutableStateOf("") }
+
+    // Read tasks from file on first composition
+    LaunchedEffect(Unit) {
+        try {
+            context.openFileInput(DAILYTASKLISTSFILE).use { input ->
+                tasks = input.bufferedReader().readLines()
+            }
+        } catch (e: IOException) {
+            tasks = listOf("No tasks found.")
+        }
+    }
+
+    // Function to update a task and save to file
+    fun updateTask(index: Int, newTask: String) {
+        val updatedTasks = tasks.toMutableList()
+        updatedTasks[index] = newTask
+        tasks = updatedTasks
+        // Write all tasks back to file
+        context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_PRIVATE).use { output ->
+            output.write(updatedTasks.joinToString("\n").toByteArray())
+        }
+    }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Remove Task Screen")
+        Spacer(modifier = Modifier.height(16.dp))
+        tasks.forEachIndexed { idx, task ->
+            Button(
+                onClick = {
+                    editingIndex = idx
+                    editingText = task
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Text(task)
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onBack) { Text("Back") }
+    }
+
+    // Edit dialog
+    if (editingIndex != null) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { editingIndex = null },
+            title = { Text("Edit or Remove Task") },
+            text = {
+                TextField(
+                    value = editingText,
+                    onValueChange = { editingText = it },
+                    label = { Text("Task") }
+                )
+            },
+            confirmButton = {
+                Row {
+                    Button(onClick = {
+                        editingIndex?.let { idx ->
+                            updateTask(idx, editingText)
+                        }
+                        editingIndex = null
+                    }) { Text("Save") }
+                    Spacer(Modifier.width(8.dp))
+                    Button(onClick = {
+                        editingIndex?.let { idx ->
+                            // Remove the selected task
+                            val updatedTasks = tasks.toMutableList().apply { removeAt(idx) }
+                            tasks = updatedTasks
+                            // Write the updated list back to the file (no empty lines)
+                            context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_PRIVATE).use { output ->
+                                output.write(updatedTasks.joinToString("\n").toByteArray())
+                            }
+                        }
+                        editingIndex = null
+                    }) { Text("Remove Task") }
+                }
+            },
+            dismissButton = {
+                Button(onClick = { editingIndex = null }) { Text("Cancel") }
+            }
+        )
+    }
 }
 
 @Composable

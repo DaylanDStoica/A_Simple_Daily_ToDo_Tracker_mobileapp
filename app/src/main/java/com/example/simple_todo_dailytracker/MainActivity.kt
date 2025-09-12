@@ -399,5 +399,7 @@ fun GreetingPreview() {
     }
 }
 
-// TODO: develop a screen for writing tasks that only need to be done once, rather than daily
+// scrapped to do: develop a screen for writing tasks that only need to be done once, rather than daily
 // user should still be able to view all tasks under the single ViewTasks screen and edit as such
+
+// forget this task: it's role is already accomplished by the RemoveTask set

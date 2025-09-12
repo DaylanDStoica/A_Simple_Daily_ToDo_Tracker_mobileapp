@@ -92,7 +92,7 @@ fun MainScreen(
         Greeting(name = "User")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onAddTask) {
-            Text("Add Task")
+            Text("Add Daily Task")
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onViewTasks) {
@@ -105,11 +105,11 @@ fun MainScreen(
         Spacer(modifier = Modifier.height(8.dp))
         // TODO: change ResetTasks button to one with a confirmation window. One click to reset a day's progress is too easy to happen by accident.
         Button( onClick = { ResetTodaysTasks(context = context) }){
-            Text("Reset Tasks")
+            Text("Reset Daily Tasks")
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onRemoveTask) {
-            Text("Remove Task")
+            Text("Remove Daily Task")
         }
     }
 }

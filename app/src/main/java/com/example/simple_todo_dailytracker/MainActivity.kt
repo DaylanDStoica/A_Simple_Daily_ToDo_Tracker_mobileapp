@@ -26,11 +26,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import java.io.IOException
 import java.io.InputStream // commenting this import out, results in blank space to be added to storage file when being written to.
+// intended for long term tasks, not to be repeated but reminded until done over multiple days
 
 
 
 const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
 const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
+const val LONGTERMTASKLISTFILE: String = "longerTermTaskFile.txt" // is not reset at the end of the day, and is edited only by the user
 
 // function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
 fun ResetTodaysTasks(context: Context) {

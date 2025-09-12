@@ -92,7 +92,7 @@ fun MainScreen(
         Greeting(name = "User")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onAddTask) {
-            Text("Add Daily Task")
+            Text("Add Task")
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onViewTasks) {
@@ -132,21 +132,37 @@ fun AddTaskScreen(onBack: () -> Unit) {
             label = { Text("Task Name") }
         )
         Spacer(Modifier.height(8.dp))
-        Button(onClick = { // button to submit task to end of the DAILYTASKLISTSFILE
-            Log.d("AddTaskScreen", "Task entered: $taskName")
-            // writing to internal storage
-            context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_APPEND).use { output ->
-                output.write((taskName + "\n").toByteArray())
-            }
-            context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_APPEND).use { output ->
-                output.write((taskName + "\n").toByteArray())
-            }
-            // after writing to the file, clear the text value in the box
+        // have the two buttons in a row: 'Submit Daily Task' and 'Submit Today's Task'
+        // DailyTask will be added to both storage tasklist files, and TodaysTask will be only to TodaysTAskList
+        Row{
+            Button(onClick = { // button to submit task to end of the DAILYTASKLISTSFILE
+                Log.d("AddTaskScreen", "Daily Task entered: $taskName")
+                // writing to internal storage
+                context.openFileOutput(DAILYTASKLISTSFILE, Context.MODE_APPEND).use { output ->
+                    output.write((taskName + "\n").toByteArray())
+                }
+                context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_APPEND).use { output ->
+                    output.write((taskName + "\n").toByteArray())
+                }
+                // after writing to the file, clear the text value in the box
 //            Text("Task added: $taskName")
-            taskName = "" // set visible task entry box to empty
-            // display a message telling that the task was added
-        }) {
-            Text("Submit Task")
+                taskName = "" // set visible task entry box to empty
+                // display a message telling that the task was added
+            }) {
+                Text("Submit Daily Task")
+            }
+            Button( onClick = { // add task for only for today, will disappear when reset
+                Log.d("AddTaskScreen", "Today Task entered: $taskName")
+                context.openFileOutput(TODAYSTASKLISTFILE, Context.MODE_APPEND).use { output ->
+                    output.write((taskName + "\n").toByteArray())
+                }
+                // after writing to the file, clear the text value in the box
+//            Text("Task added: $taskName")
+                taskName = "" // set visible task entry box to empty
+                // display a message telling that the task was added
+            }) {
+                Text( "Submit Today Task")
+            }
         }
         Spacer(Modifier.height(8.dp))
         Button(onClick = onBack) { Text("Back") }
@@ -378,3 +394,6 @@ fun GreetingPreview() {
         MainScreen({}, {}, {}, onRemoveTask = {} )
     }
 }
+
+// TODO: develop a screen for writing tasks that only need to be done once, rather than daily
+// user should still be able to view all tasks under the single ViewTasks screen and edit as such

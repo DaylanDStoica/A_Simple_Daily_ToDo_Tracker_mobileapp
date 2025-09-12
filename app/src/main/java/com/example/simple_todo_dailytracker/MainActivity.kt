@@ -32,7 +32,9 @@ import java.io.InputStream // commenting this import out, results in blank space
 
 const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
 const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
-const val LONGTERMTASKLISTFILE: String = "longerTermTaskFile.txt" // is not reset at the end of the day, and is edited only by the user
+
+//const val LONGTERMTASKLISTFILE: String = "longerTermTaskFile.txt" // is not reset at the end of the day, and is edited only by the user
+// this job is fulfilled by the 'Remove Task' button and screen, redundant
 
 // function to reset contents of TODAYSTASKLISTFILE to be the contents of dailyTaskFile
 fun ResetTodaysTasks(context: Context) {

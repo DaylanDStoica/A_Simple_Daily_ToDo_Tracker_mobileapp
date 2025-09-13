@@ -202,7 +202,6 @@ fun ViewTasksScreen(onBack: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
     }
-    // TODO: enable scrolling screen
 }
 
 @Composable
@@ -212,7 +211,6 @@ fun MarkProgressScreen(onBack: () -> Unit) {
     var editingIndex by remember { mutableStateOf<Int?>(null) }
     var editingText by remember { mutableStateOf("") }
 
-    // TODO: enable screen scrolling
     // Read tasks from file on first composition
     LaunchedEffect(Unit) {
         try {

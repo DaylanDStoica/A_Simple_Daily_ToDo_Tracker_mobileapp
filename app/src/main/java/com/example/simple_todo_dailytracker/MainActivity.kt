@@ -119,9 +119,9 @@ fun MainScreen(
 }
 
 // screens for the different features of the app:
-// 1. AddTask, with a keyboard
-// 2. ViewTask, read only as a reminder
-// 3. MarkProgress, with a slider or a checkmark to signify task complete
+// 1. AddTask, with a keyboard. Complete
+// 2. ViewTask, read only as a reminder. Complete
+// 3. MarkProgress, with a slider or a checkmark to signify task complete. Complete
 @Composable
 fun AddTaskScreen(onBack: () -> Unit) {
     // screen for adding a task to the list
@@ -197,6 +197,7 @@ fun ViewTasksScreen(onBack: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onBack) { Text("Back") }
     }
+    // TODO: enable scrolling screen
 }
 
 @Composable
@@ -206,6 +207,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
     var editingIndex by remember { mutableStateOf<Int?>(null) }
     var editingText by remember { mutableStateOf("") }
 
+    // TODO: enable screen scrolling
     // Read tasks from file on first composition
     LaunchedEffect(Unit) {
         try {
@@ -215,6 +217,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
         } catch (e: IOException) {
             tasks = listOf("No tasks found.")
         }
+
     }
 
     // Function to update a task and save to file
@@ -290,7 +293,7 @@ fun MarkProgressScreen(onBack: () -> Unit) {
     }
 }
 
-// TODO: setup the RemoveTask Screen for removing lines from the DailyTasks File
+// Complete: setup the RemoveTask Screen for removing lines from the DailyTasks File
 @Composable
 fun RemoveTaskScreen(onBack: () -> Unit) {
     // screen for removing tasks from permanent DailyTasks

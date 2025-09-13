@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.example.simple_todo_dailytracker.ui.theme.Simple_ToDo_DailyTrackerTheme
 import java.io.File
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 // Add these imports for navigation
 import androidx.navigation.compose.NavHost
@@ -190,7 +192,10 @@ fun ViewTasksScreen(onBack: () -> Unit) {
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier
+        .padding(16.dp)
+        .verticalScroll(rememberScrollState() ) //enable scrolling
+        )  {
         Text("View Tasks Screen")
         Spacer(modifier = Modifier.height(16.dp))
         Text(tasks)
@@ -231,7 +236,10 @@ fun MarkProgressScreen(onBack: () -> Unit) {
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()) //enables scrolling vertically
+    ) {
         Text("Mark Progress Screen")
         Spacer(modifier = Modifier.height(16.dp))
         tasks.forEachIndexed { idx, task ->
@@ -326,7 +334,10 @@ fun RemoveTaskScreen(onBack: () -> Unit) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Remove Task Screen")
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier
+            .height(16.dp)
+            .verticalScroll(rememberScrollState() )
+        )
         tasks.forEachIndexed { idx, task ->
             Button(
                 onClick = {

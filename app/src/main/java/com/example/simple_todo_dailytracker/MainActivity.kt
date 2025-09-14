@@ -21,6 +21,7 @@ import java.io.File
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 
 // Add these imports for navigation
 import androidx.navigation.compose.NavHost
@@ -30,7 +31,8 @@ import java.io.IOException
 import java.io.InputStream // commenting this import out, results in blank space to be added to storage file when being written to.
 // intended for long term tasks, not to be repeated but reminded until done over multiple days
 
-
+// A_Simple_Daily_ToDo_Tracker_mobileapp
+// written and owned by DaylanDStoica
 
 const val DAILYTASKLISTSFILE : String = "dailyTaskFile.txt"
 const val TODAYSTASKLISTFILE : String = "todaysTaskFile.txt"
@@ -94,6 +96,8 @@ fun MainScreen(
     onRemoveTask: () -> Unit
 ) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) } // used for the ResetTask confirmation window
+
     Column(modifier = Modifier.padding(16.dp)) {
         Greeting(name = "User")
         Spacer(modifier = Modifier.height(16.dp))
@@ -110,8 +114,24 @@ fun MainScreen(
         }
         Spacer(modifier = Modifier.height(8.dp))
         // TODO: change ResetTasks button to one with a confirmation window. One click to reset a day's progress is too easy to happen by accident.
-        Button( onClick = { ResetTodaysTasks(context = context) }){
+        Button( onClick = { showDialog = true }){
             Text("Reset Daily Tasks")
+        }
+        if (showDialog) { // confirmation for ResetTasks
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Confirm Reset") },
+                text = { Text("Are you sure you want to reset today's tasks?") },
+                confirmButton = {
+                    Button(onClick = {
+                        ResetTodaysTasks(context)
+                        showDialog = false
+                    }) { Text("Yes") }
+                },
+                dismissButton = {
+                    Button(onClick = { showDialog = false }) { Text("No") }
+                }
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = onRemoveTask) {
